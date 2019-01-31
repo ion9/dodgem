@@ -1,6 +1,11 @@
+var express = require('express');
+var app = express();
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+
+
 // server requirements
 var util = require("util"),
-    io = require("socket.io"),
     _ = require("underscore"),
     Player = require("./Player.js").Player;
 
@@ -8,23 +13,33 @@ var util = require("util"),
 var socket, players, pendings, matches;
 
 
-// init method
+
+  // init method
 function init() {
     players = [];
     pendings = [];
     matches = {};
-    // socket.io setup
-    socket = io.listen(8000);
+    
+    app.use(express.static(__dirname + '../../'));
+    
+    app.get('/', function(req, res,next) {
+        res.sendFile(__dirname + '/index.html');
+    });
+
+    server.listen(process.env.PORT || 8000);
+    console.log("listening on 8000")
+   // socket.io setup
+    //socket = io.listen();
     // setting socket io transport
-    socket.set("transports", ["websocket"]);
+    io.set("transports", ["websocket"]);
     // setting socket io log level
-    socket.set("log lever", 2);
+    //socket.set("log lever", 2);
     setEventHandlers();
 }
 
 var setEventHandlers = function() {
     // Socket.IO
-    socket.sockets.on("connection", onSocketConnection);
+    io.on("connection", onSocketConnection);
 };
 
 // New socket connection
