@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dodgem
+  labels:
+    app: dodgem
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dodgem
+  template:
+    metadata:
+      labels:
+        app: dodgem
+    spec:
+      imagePullSecrets:
+      - name: pipeline-docker-registry
+      containers:
+      - name: dodgem
+        image: ${CICD_IMAGE}:${CICD_EXECUTION_SEQUENCE}
+        ports:
+        - containerPort: 8000
