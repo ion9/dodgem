@@ -1,8 +1,9 @@
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
-var io = require('socket.io')(server);
-
+var io = require('socket.io')(server, { 
+    path: '/socket.io'
+})
 
 // server requirements
 var util = require("util"),
@@ -29,9 +30,9 @@ function init() {
     server.listen(process.env.PORT || 8000);
     console.log("listening on 8000")
    // socket.io setup
-    //socket = io.listen();
+    socket = io
     // setting socket io transport
-    io.set("transports", ["websocket"]);
+    // io.set("transports", ["websocket"]);
     // setting socket io log level
     //socket.set("log lever", 2);
     setEventHandlers();

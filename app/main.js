@@ -35,10 +35,9 @@ Class("Dodgem", {
 
 	onCreate: function() {
 
-		var server = "http://127.0.0.1:8000";
-		this.socket = io(server, {'transports': ['websocket']});//io("http://marcostagni.com:8080");
+		this.socket = io({ path: '/socket.io'}); 
 		this.socket.on("connect", function(data) {
-			//console.log(data);
+		console.log(data);
 		});
 		// setting socket listeners
 		this.socket.on("shooting", app.onShooting);
@@ -144,7 +143,7 @@ Class("Dodgem", {
 		app.waiting = false;
 		app.platform.removeAllObstacles();
 		Game.HEALTH = Game.MAX_HEALTH;
-		//console.log(data);
+		console.log(data);
 		//creating platform
 		app.platform.createObstacles(data.numObstacles, data.height, data.positions);
 		// moving to right position
